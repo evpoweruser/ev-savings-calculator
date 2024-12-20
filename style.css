@@ -106,6 +106,12 @@ p {
 #pieChart, #electricityPieChart {
     margin-top: 20px;
     animation: fadeIn 1.5s ease-in-out;
+    will-change: transform;
+}
+
+/* Enable smooth scrolling */
+html {
+    scroll-behavior: smooth;
 }
 
 .chart-label {
