@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Savings Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>EV Savings Calculator</h1>
+        <label for="country">Select Country:</label>
+        <select id="country">
+            <option value="india">India</option>
+            <option value="usa">United States</option>
+            <option value="germany">Germany</option>
+            <option value="china">China</option>
+            <option value="tamilnadu">Tamil Nadu</option>
+        </select>
+        <label for="distance">Distance per Month (km):</label>
+        <input type="number" id="distance" value="1500">
+        <label for="evEfficiency">EV Efficiency (Wh/km):</label>
+        <input type="number" id="evEfficiency" value="200">
+        <label for="electricityCost">Cost of Electricity (Rs/kWh):</label>
+        <input type="number" id="electricityCost" value="10">
+        <label for="petrolCost">Cost of Petrol (Rs/litre):</label>
+        <input type="number" id="petrolCost" value="100">
+        <label for="petrolMileage">Petrol Car Mileage (km/litre):</label>
+        <input type="number" id="petrolMileage" value="15">
+        <button onclick="calculateSavings()">Calculate Savings</button>
+        <h2>Results</h2>
+        <p id="savings">Monthly EV Savings: Rs 0.00</p>
+        <p id="co2Emissions">Monthly CO2 Emissions from Petrol Car: 0.00 kg</p>
+        <div id="pieChart"></div>
+        <div id="electricityPieChart"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
