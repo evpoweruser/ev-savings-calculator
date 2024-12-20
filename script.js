@@ -1,6 +1,8 @@
 function updateValue(id) {
-    const value = document.getElementById(id).value;
+    const slider = document.getElementById(id);
+    const value = slider.value;
     document.getElementById(id + 'Value').textContent = value;
+    slider.title = value; // Update the title attribute to show the value as a tooltip
 }
 
 function calculateSavings() {
