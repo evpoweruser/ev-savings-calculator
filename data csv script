@@ -1,0 +1,2 @@
+pip install pandas requests
+python scripts/fetch_energy_data.py
