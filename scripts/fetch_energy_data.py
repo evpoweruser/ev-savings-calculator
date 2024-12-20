@@ -1,14 +1,11 @@
+import pandas as pd
 import requests
-import json
 
-URL = "https://ourworldindata.org/energy"
-OUTPUT_FILE = "data/energy_values.json"
+# Fetch the data.
+df = pd.read_csv("https://ourworldindata.org/grapher/electricity-prod-source-stacked.csv?v=1&csvType=full&useColumnShortNames=true", storage_options={'User-Agent': 'Our World In Data data fetch/1.0'})
 
-def fetch_energy_data():
-    response = requests.get(URL)
-    data = response.json()
-    with open(OUTPUT_FILE, 'w') as file:
-        json.dump(data, file)
+# Fetch the metadata
+metadata = requests.get("https://ourworldindata.org/grapher/electricity-prod-source-stacked.metadata.json?v=1&csvType=full&useColumnShortNames=true").json()
 
-if __name__ == "__main__":
-    fetch_energy_data()
+# Save the data to a CSV file
+df.to_csv('electricity_mix_data.csv', index=False)
