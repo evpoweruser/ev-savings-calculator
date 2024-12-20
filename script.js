@@ -101,24 +101,26 @@ function calculateSavings() {
     const monthlyPetrolConsumption = distance / petrolMileageKmPerLitre;
     const monthlyCo2Emissions = monthlyPetrolConsumption * co2EmissionsPerLitre;
 
-    // Calculate monthly CO2 emissions for EV
-    const monthlyEvCo2Emissions = calculateCo2Emissions(distance, evEfficiencyKwhPerKm, electricityMix);
+    // Calculate monthly CO2 emissions for EV with current electricity mix
+    const monthlyEvCo2EmissionsCurrentMix = calculateCo2Emissions(distance, evEfficiencyKwhPerKm, electricityMix);
 
-    // Split CO2 emissions
-    const generationPercentage = 0.70;
-    const transmissionPercentage = 0.05;
-    const conversionPercentage = 0.25;
-    const co2Generation = monthlyEvCo2Emissions * generationPercentage;
-    const co2Transmission = monthlyEvCo2Emissions * transmissionPercentage;
-    const co2Conversion = monthlyEvCo2Emissions * conversionPercentage;
+    // Calculate monthly CO2 emissions for EV with 100% renewable energy
+    const renewableMix = { renewables: 100 };
+    const monthlyEvCo2EmissionsRenewable = calculateCo2Emissions(distance, evEfficiencyKwhPerKm, renewableMix);
+
+    // Calculate CO2 reduction
+    const co2ReductionCurrentMix = monthlyCo2Emissions - monthlyEvCo2EmissionsCurrentMix;
+    const co2ReductionRenewable = monthlyCo2Emissions - monthlyEvCo2EmissionsRenewable;
 
     // Update results in HTML
     document.getElementById('savings').innerText = `Monthly EV Savings: Rs ${totalSavings.toFixed(2)}`;
     document.getElementById('co2Emissions').innerText = `Monthly CO2 Emissions from Petrol Car: ${monthlyCo2Emissions.toFixed(2)} kg`;
+    document.getElementById('co2ReductionCurrentMix').innerText = `Monthly CO2 Reduction with Current Mix: ${co2ReductionCurrentMix.toFixed(2)} kg`;
+    document.getElementById('co2ReductionRenewable').innerText = `Monthly CO2 Reduction with 100% Renewable: ${co2ReductionRenewable.toFixed(2)} kg`;
 
     // Create pie chart for CO2 emissions breakdown
     const co2Data = [{
-        values: [co2Generation, co2Transmission, co2Conversion],
+        values: [monthlyEvCo2EmissionsCurrentMix * 0.7, monthlyEvCo2EmissionsCurrentMix * 0.05, monthlyEvCo2EmissionsCurrentMix * 0.25],
         labels: ['Generation', 'Transmission', 'Conversion Efficiency'],
         hovertext: ['Source: Generation', 'Source: Transmission', 'Source: Conversion Efficiency'],
         type: 'pie'
