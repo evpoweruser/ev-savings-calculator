@@ -18,17 +18,24 @@
             <option value="china">China</option>
             <option value="tamilnadu">Tamil Nadu</option>
         </select>
-        <label for="distance">Distance per Month (km):</label>
-        <input type="number" id="distance" value="1500">
-        <label for="evEfficiency">EV Efficiency (Wh/km):</label>
-        <input type="number" id="evEfficiency" value="200">
-        <label for="electricityCost">Cost of Electricity (Rs/kWh):</label>
-        <input type="number" id="electricityCost" value="10">
-        <label for="petrolCost">Cost of Petrol (Rs/litre):</label>
-        <input type="number" id="petrolCost" value="100">
-        <label for="petrolMileage">Petrol Car Mileage (km/litre):</label>
-        <input type="number" id="petrolMileage" value="15">
+
+        <label for="distance">Distance per Month (km): <span id="distanceValue">1500</span></label>
+        <input type="range" id="distance" min="0" max="5000" value="1500" oninput="updateValue('distance')">
+
+        <label for="evEfficiency">EV Efficiency (Wh/km): <span id="evEfficiencyValue">200</span></label>
+        <input type="range" id="evEfficiency" min="50" max="500" value="200" oninput="updateValue('evEfficiency')">
+
+        <label for="electricityCost">Cost of Electricity (Rs/kWh): <span id="electricityCostValue">10</span></label>
+        <input type="range" id="electricityCost" min="1" max="50" value="10" oninput="updateValue('electricityCost')">
+
+        <label for="petrolCost">Cost of Petrol (Rs/litre): <span id="petrolCostValue">100</span></label>
+        <input type="range" id="petrolCost" min="50" max="200" value="100" oninput="updateValue('petrolCost')">
+
+        <label for="petrolMileage">Petrol Car Mileage (km/litre): <span id="petrolMileageValue">15</span></label>
+        <input type="range" id="petrolMileage" min="5" max="30" value="15" oninput="updateValue('petrolMileage')">
+
         <button onclick="calculateSavings()">Calculate Savings</button>
+
         <h2>Results</h2>
         <p id="savings">Monthly EV Savings: Rs 0.00</p>
         <p id="co2Emissions">Monthly CO2 Emissions from Petrol Car: 0.00 kg</p>
