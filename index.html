@@ -20,19 +20,19 @@
         </select>
 
         <label for="distance">Distance per Month (km): <span id="distanceValue">1500</span></label>
-        <input type="range" id="distance" min="0" max="5000" value="1500" oninput="updateValue('distance')">
+        <input type="range" id="distance" min="0" max="5000" value="1500" title="1500" oninput="updateValue('distance')">
 
         <label for="evEfficiency">EV Efficiency (Wh/km): <span id="evEfficiencyValue">200</span></label>
-        <input type="range" id="evEfficiency" min="50" max="500" value="200" oninput="updateValue('evEfficiency')">
+        <input type="range" id="evEfficiency" min="50" max="500" value="200" title="200" oninput="updateValue('evEfficiency')">
 
         <label for="electricityCost">Cost of Electricity (Rs/kWh): <span id="electricityCostValue">10</span></label>
-        <input type="range" id="electricityCost" min="1" max="50" value="10" oninput="updateValue('electricityCost')">
+        <input type="range" id="electricityCost" min="1" max="50" value="10" title="10" oninput="updateValue('electricityCost')">
 
         <label for="petrolCost">Cost of Petrol (Rs/litre): <span id="petrolCostValue">100</span></label>
-        <input type="range" id="petrolCost" min="50" max="200" value="100" oninput="updateValue('petrolCost')">
+        <input type="range" id="petrolCost" min="50" max="200" value="100" title="100" oninput="updateValue('petrolCost')">
 
         <label for="petrolMileage">Petrol Car Mileage (km/litre): <span id="petrolMileageValue">15</span></label>
-        <input type="range" id="petrolMileage" min="5" max="30" value="15" oninput="updateValue('petrolMileage')">
+        <input type="range" id="petrolMileage" min="5" max="30" value="15" title="15" oninput="updateValue('petrolMileage')">
 
         <button onclick="calculateSavings()">Calculate Savings</button>
 
