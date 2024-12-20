@@ -65,6 +65,28 @@ function calculateSavings() {
         title: 'CO2 Emissions Comparison'
     };
     Plotly.newPlot('electricityPieChart', co2PieData, co2PieLayout);
+
+    // Plotly bar chart for savings
+    const savingsData = [{
+        x: ['Petrol Cost', 'EV Cost', 'Savings'],
+        y: [petrolCostTotal, evCost, savings],
+        type: 'bar'
+    }];
+    const savingsLayout = {
+        title: 'Savings Comparison'
+    };
+    Plotly.newPlot('savingsBarChart', savingsData, savingsLayout);
+
+    // Plotly bar chart for CO2 emissions reduction
+    const co2ReductionData = [{
+        x: ['Petrol CO2 Emissions', 'EV CO2 Emissions', 'CO2 Reduction (Current Mix)', 'CO2 Reduction (Renewable)'],
+        y: [petrolCO2Emissions, evCO2EmissionsCurrentMix, co2ReductionCurrentMix, co2ReductionRenewable],
+        type: 'bar'
+    }];
+    const co2ReductionLayout = {
+        title: 'CO2 Emissions Reduction Comparison'
+    };
+    Plotly.newPlot('co2ReductionBarChart', co2ReductionData, co2ReductionLayout);
 }
 
 // Adding an event listener to run the function when the button is clicked
