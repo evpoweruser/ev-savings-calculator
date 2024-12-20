@@ -50,6 +50,30 @@ function getElectricityMix(country) {
     return mixes[country];
 }
 
+function calculateCo2Emissions(kilometers, evEfficiencyKwhPerKm, electricityMix) {
+    // CO2 emissions factors (kg CO2 per kWh)
+    const emissionsFactors = {
+        coal: 0.820,
+        gas: 0.490,
+        diesel: 0.650,
+        nuclear: 0,
+        renewables: 0  // Assuming zero emissions for renewables like wind, solar, hydro, biomass
+    };
+
+    // Calculate weighted average CO2 emissions per kWh
+    let weightedCo2Emissions = 0;
+    for (const source in electricityMix) {
+        const factor = emissionsFactors[source] || 0;  // Default to 0 for renewables
+        weightedCo2Emissions += (electricityMix[source] / 100) * factor;
+    }
+
+    // Calculate total energy consumption
+    const totalEnergyKwh = kilometers * evEfficiencyKwhPerKm;
+
+    // Calculate total CO2 emissions
+    return totalEnergyKwh * weightedCo2Emissions;
+}
+
 function calculateSavings() {
     const country = document.getElementById('country').value;
     const electricityMix = getElectricityMix(country);
@@ -77,24 +101,8 @@ function calculateSavings() {
     const monthlyPetrolConsumption = distance / petrolMileageKmPerLitre;
     const monthlyCo2Emissions = monthlyPetrolConsumption * co2EmissionsPerLitre;
 
-    // CO2 emissions factors (kg CO2 per kWh)
-    const emissionsFactors = {
-        coal: 0.820,
-        gas: 0.490,
-        diesel: 0.650,
-        nuclear: 0,
-        renewables: 0  // Assuming zero emissions for renewables like wind, solar, hydro, biomass
-    };
-
-    // Calculate weighted average CO2 emissions per kWh
-    let weightedCo2Emissions = 0;
-    for (const source in electricityMix) {
-        const factor = emissionsFactors[source] || 0;  // Default to 0 for renewables
-        weightedCo2Emissions += (electricityMix[source] / 100) * factor;
-    }
-
     // Calculate monthly CO2 emissions for EV
-    const monthlyEvCo2Emissions = distance * evEfficiencyKwhPerKm * weightedCo2Emissions;
+    const monthlyEvCo2Emissions = calculateCo2Emissions(distance, evEfficiencyKwhPerKm, electricityMix);
 
     // Split CO2 emissions
     const generationPercentage = 0.70;
