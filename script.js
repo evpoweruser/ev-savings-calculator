@@ -1,3 +1,8 @@
+function updateValue(id) {
+    const value = document.getElementById(id).value;
+    document.getElementById(id + 'Value').textContent = value;
+}
+
 function calculateSavings() {
     // Get input values
     const distance = parseFloat(document.getElementById('distance').value);
