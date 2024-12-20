@@ -36,6 +36,28 @@ function calculateSavings() {
     document.getElementById('co2ReductionCurrentMix').textContent = `CO2 Reduction with Current Energy Mix: ${co2ReductionCurrentMix.toFixed(2)} kg`;
     document.getElementById('co2ReductionRenewable').textContent = `CO2 Reduction with Renewable Energy: ${co2ReductionRenewable.toFixed(2)} kg`;
     document.getElementById('equivalentEVDistance').textContent = `Equivalent EV Distance to produce same CO2 as Petrol Car: ${equivalentEVDistance.toFixed(2)} km`;
+
+    // Plotly pie chart for petrol vs EV cost
+    const pieData = [{
+        values: [petrolCostTotal, evCost],
+        labels: ['Petrol Cost', 'EV Cost'],
+        type: 'pie'
+    }];
+    const pieLayout = {
+        title: 'Cost Comparison'
+    };
+    Plotly.newPlot('pieChart', pieData, pieLayout);
+
+    // Plotly pie chart for CO2 emissions
+    const co2PieData = [{
+        values: [petrolCO2Emissions, evCO2EmissionsCurrentMix],
+        labels: ['Petrol CO2 Emissions', 'EV CO2 Emissions'],
+        type: 'pie'
+    }];
+    const co2PieLayout = {
+        title: 'CO2 Emissions Comparison'
+    };
+    Plotly.newPlot('electricityPieChart', co2PieData, co2PieLayout);
 }
 
 // Adding an event listener to run the function when the button is clicked
