@@ -49,6 +49,22 @@ input[type="number"]:focus, select:focus {
     outline: none;
 }
 
+.range-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.range-label {
+    flex-basis: 40%;
+    font-size: 1.1em;
+}
+
+.range-slider {
+    flex-basis: 55%;
+}
+
 button {
     width: 100%;
     padding: 15px 0;
