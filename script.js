@@ -8,6 +8,12 @@ function calculateSavings() {
     const co2PerLitrePetrol = 2.31; // kg of CO2 per litre of petrol
     const co2PerKwhCurrentMix = 0.5; // kg of CO2 per kWh of electricity
 
+    // Check if all input values are valid
+    if (isNaN(distance) || isNaN(evEfficiency) || isNaN(electricityCost) || isNaN(petrolCost) || isNaN(petrolMileage)) {
+        alert("Please enter valid inputs");
+        return;
+    }
+
     // Calculate savings
     const electricityConsumption = distance * evEfficiency; // kWh
     const evCost = electricityConsumption * electricityCost;
@@ -31,3 +37,6 @@ function calculateSavings() {
     document.getElementById('co2ReductionRenewable').textContent = `CO2 Reduction with Renewable Energy: ${co2ReductionRenewable.toFixed(2)} kg`;
     document.getElementById('equivalentEVDistance').textContent = `Equivalent EV Distance to produce same CO2 as Petrol Car: ${equivalentEVDistance.toFixed(2)} km`;
 }
+
+// Adding an event listener to run the function when the button is clicked
+document.querySelector('button').addEventListener('click', calculateSavings);
