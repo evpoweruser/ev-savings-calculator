@@ -1,103 +1,179 @@
-function updateValue(id) {
-    const slider = document.getElementById(id);
-    const value = slider.value;
-    document.getElementById(id + 'Value').textContent = value;
-    slider.title = value; // Update the title attribute to show the value as a tooltip
+/* General styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #0a0a0a;
+    color: #00ffff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-function calculateSavings() {
-    // Get input values
-    const distance = parseFloat(document.getElementById('distance').value);
-    const evEfficiency = parseFloat(document.getElementById('evEfficiency').value) / 1000; // convert Wh/km to kWh/km
-    const electricityCost = parseFloat(document.getElementById('electricityCost').value);
-    const petrolCost = parseFloat(document.getElementById('petrolCost').value);
-    const petrolMileage = parseFloat(document.getElementById('petrolMileage').value);
-    const co2PerLitrePetrol = 2.31; // kg of CO2 per litre of petrol
-    const co2PerKwhCurrentMix = 0.5; // kg of CO2 per kWh of electricity
+h1, h2 {
+    text-align: center;
+    color: #00ffff;
+}
 
-    // Check if all input values are valid
-    if (isNaN(distance) || isNaN(evEfficiency) || isNaN(electricityCost) || isNaN(petrolCost) || isNaN(petrolMileage)) {
-        alert("Please enter valid inputs");
-        return;
+/* Container styling */
+.container {
+    max-width: 800px;
+    padding: 20px;
+    background-color: #1a1a1a;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+    border-radius: 8px;
+}
+
+/* Label and input styling */
+label {
+    display: block;
+    margin: 20px 0 10px;
+    color: #00ffff;
+    font-weight: bold;
+}
+
+select, input[type="range"], button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: #1a1a1a;
+    color: #00ffff;
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    transition: box-shadow 0.3s;
+}
+
+select:hover, input[type="range"]:hover, button:hover {
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+}
+
+/* Slider styling */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 10px;
+    background: #007BFF;
+    border-radius: 20px; /* Rounded edges */
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #00ffff;
+    border: 2px solid #007BFF;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px #00ffff;
+    animation: electric 1s infinite;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #00ffff;
+    border: 2px solid #007BFF;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px #00ffff;
+    animation: electric 1s infinite;
+}
+
+@keyframes electric {
+    0% {
+        box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #007BFF, 0 0 40px #007BFF;
     }
-
-    // Calculate savings
-    const electricityConsumption = distance * evEfficiency; // kWh
-    const evCost = electricityConsumption * electricityCost;
-    const petrolConsumption = distance / petrolMileage; // litres
-    const petrolCostTotal = petrolConsumption * petrolCost;
-    const savings = petrolCostTotal - evCost;
-
-    // Calculate CO2 emissions
-    const petrolCO2Emissions = petrolConsumption * co2PerLitrePetrol;
-    const evCO2EmissionsCurrentMix = electricityConsumption * co2PerKwhCurrentMix;
-    const co2ReductionCurrentMix = petrolCO2Emissions - evCO2EmissionsCurrentMix;
-    const co2ReductionRenewable = petrolCO2Emissions;
-
-    // Calculate equivalent EV distance to produce same CO2 as petrol car
-    const equivalentEVDistance = (petrolCO2Emissions / co2PerKwhCurrentMix) / evEfficiency;
-
-    // Update the results in the HTML
-    document.getElementById('savings').textContent = `Monthly EV Savings: Rs ${savings.toFixed(2)}`;
-    document.getElementById('co2Emissions').textContent = `Monthly CO2 Emissions from Petrol Car: ${petrolCO2Emissions.toFixed(2)} kg`;
-    document.getElementById('co2ReductionCurrentMix').textContent = `CO2 Reduction with Current Energy Mix: ${co2ReductionCurrentMix.toFixed(2)} kg`;
-    document.getElementById('co2ReductionRenewable').textContent = `CO2 Reduction with Renewable Energy: ${co2ReductionRenewable.toFixed(2)} kg`;
-    document.getElementById('equivalentEVDistance').textContent = `Equivalent EV Distance to produce same CO2 as Petrol Car: ${equivalentEVDistance.toFixed(2)} km`;
-
-    // Plotly pie chart for petrol vs EV cost
-    const pieData = [{
-        values: [petrolCostTotal, evCost],
-        labels: ['Petrol Cost', 'EV Cost'],
-        type: 'pie'
-    }];
-    const pieLayout = {
-        title: 'Cost Comparison'
-    };
-    Plotly.newPlot('pieChart', pieData, pieLayout);
-
-    // Plotly pie chart for CO2 emissions
-    const co2PieData = [{
-        values: [petrolCO2Emissions, evCO2EmissionsCurrentMix],
-        labels: ['Petrol CO2 Emissions', 'EV CO2 Emissions'],
-        type: 'pie'
-    }];
-    const co2PieLayout = {
-        title: 'CO2 Emissions Comparison'
-    };
-    Plotly.newPlot('electricityPieChart', co2PieData, co2PieLayout);
-
-    // Plotly bar chart for savings
-    const savingsData = [{
-        x: ['Petrol Cost', 'EV Cost', 'Savings'],
-        y: [petrolCostTotal, evCost, savings],
-        type: 'bar'
-    }];
-    const savingsLayout = {
-        title: 'Savings Comparison'
-    };
-    Plotly.newPlot('savingsBarChart', savingsData, savingsLayout);
-
-    // Plotly bar chart for CO2 emissions reduction
-    const co2ReductionData = [{
-        x: ['Petrol CO2 Emissions', 'EV CO2 Emissions', 'CO2 Reduction (Current Mix)', 'CO2 Reduction (Renewable)'],
-        y: [petrolCO2Emissions, evCO2EmissionsCurrentMix, co2ReductionCurrentMix, co2ReductionRenewable],
-        type: 'bar'
-    }];
-    const co2ReductionLayout = {
-        title: 'CO2 Emissions Reduction Comparison'
-    };
-    Plotly.newPlot('co2ReductionBarChart', co2ReductionData, co2ReductionLayout);
+    50% {
+        box-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #007BFF, 0 0 50px #007BFF;
+    }
+    100% {
+        box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #007BFF, 0 0 40px #007BFF;
+    }
 }
 
-// Scroll to top function with slingshot animation
-function scrollToTop() {
-    const takeToTopButton = document.getElementById('takeToTop');
-    takeToTopButton.classList.add('slingshot-effect');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setTimeout(() => {
-        takeToTopButton.classList.remove('slingshot-effect');
-    }, 500);
+/* Button styling */
+button {
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    margin-top: 20px;
 }
 
-// Adding an event listener to run the function when the button is clicked
-document.querySelector('button').addEventListener('click', calculateSavings);
+button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 5px 15px rgba(0, 91, 187, 0.4);
+}
+
+/* Results section styling */
+p {
+    font-size: 18px;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+/* Chart styling */
+#pieChart, #electricityPieChart, #savingsBarChart, #co2ReductionBarChart {
+    margin-top: 30px;
+    width: 100%;
+    height: 400px;
+}
+
+/* Take to Top Button */
+#takeToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 0, 139, 0.5); /* Dark blue with transparency */
+    border-radius: 50%;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 91, 187, 0.4);
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+#takeToTop img {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+#takeToTop:active {
+    transform: scale(0.9);
+}
+
+@keyframes slingshot {
+    0% {
+        transform: translateY(0);
+    }
+    20% {
+        transform: translateY(-30px);
+    }
+    40% {
+        transform: translateY(10px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+    80% {
+        transform: translateY(5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.slingshot-effect {
+    animation: slingshot 0.5s ease-out;
+}
