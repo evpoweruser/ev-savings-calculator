@@ -5,6 +5,10 @@ body {
     color: #00ffff;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 h1, h2 {
@@ -15,7 +19,6 @@ h1, h2 {
 /* Container styling */
 .container {
     max-width: 800px;
-    margin: 50px auto;
     padding: 20px;
     background-color: #1a1a1a;
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
@@ -52,10 +55,11 @@ input[type="range"] {
     appearance: none;
     height: 10px;
     background: #007BFF;
-    border-radius: 5px;
+    border-radius: 20px; /* Rounded edges */
     outline: none;
     position: relative;
     overflow: hidden;
+    margin: 20px 0;
 }
 
 input[type="range"]::-webkit-slider-thumb {
