@@ -115,20 +115,48 @@ p {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background-color: #007BFF;
-    color: white;
     border-radius: 50%;
     text-align: center;
-    line-height: 40px;
-    font-size: 20px;
+    line-height: 50px;
     cursor: pointer;
     box-shadow: 0 5px 15px rgba(0, 91, 187, 0.4);
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
 }
 
-#takeToTop:hover {
-    background-color: #0056b3;
-    box-shadow: 0 5px 15px rgba(0, 91, 187, 0.6);
+#takeToTop img {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+#takeToTop:active {
+    transform: scale(0.9);
+}
+
+@keyframes slingshot {
+    0% {
+        transform: translateY(0);
+    }
+    20% {
+        transform: translateY(-30px);
+    }
+    40% {
+        transform: translateY(10px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+    80% {
+        transform: translateY(5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.slingshot-effect {
+    animation: slingshot 0.5s ease-out;
 }
