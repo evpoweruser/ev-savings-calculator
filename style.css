@@ -128,12 +128,12 @@ p {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: #007BFF;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 0, 139, 0.5); /* Dark blue with transparency */
     border-radius: 50%;
     text-align: center;
-    line-height: 50px;
+    line-height: 60px;
     cursor: pointer;
     box-shadow: 0 5px 15px rgba(0, 91, 187, 0.4);
     transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
