@@ -1,3 +1,10 @@
+function updateValue(id) {
+    const slider = document.getElementById(id);
+    const value = slider.value;
+    document.getElementById(id + 'Value').textContent = value;
+    slider.title = value; // Update the title attribute to show the value as a tooltip
+}
+
 function calculateSavings() {
     // Get input values
     const distance = parseFloat(document.getElementById('distance').value);
@@ -82,9 +89,14 @@ function calculateSavings() {
     Plotly.newPlot('co2ReductionBarChart', co2ReductionData, co2ReductionLayout);
 }
 
-// Scroll to top function
+// Scroll to top function with slingshot animation
 function scrollToTop() {
+    const takeToTopButton = document.getElementById('takeToTop');
+    takeToTopButton.classList.add('slingshot-effect');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+        takeToTopButton.classList.remove('slingshot-effect');
+    }, 500);
 }
 
 // Adding an event listener to run the function when the button is clicked
