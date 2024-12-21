@@ -10,48 +10,29 @@
 <body>
     <div class="container">
         <h1>EV Savings Calculator</h1>
-        
-        <div class="range-container">
-            <label for="country" class="range-label">Select Country:</label>
-            <select id="country" class="location-dropdown">
-                <option value="usa">United States</option>
-                <option value="china">China</option>
-                <option value="india">India</option>
-                <option value="russia">Russia</option>
-                <option value="japan">Japan</option>
-                <option value="germany">Germany</option>
-                <option value="canada">Canada</option>
-                <option value="brazil">Brazil</option>
-                <option value="france">France</option>
-                <option value="southkorea">South Korea</option>
-                <option value="tamilnadu">Tamil Nadu</option>
-            </select>
-        </div>
+        <label for="country">Select Country:</label>
+        <select id="country">
+            <option value="india">India</option>
+            <option value="usa">United States</option>
+            <option value="germany">Germany</option>
+            <option value="china">China</option>
+            <option value="tamilnadu">Tamil Nadu</option>
+        </select>
 
-        <div class="range-container">
-            <label for="distance" class="range-label">Distance per Month (km): <span id="distanceValue">1500</span></label>
-            <input type="range" id="distance" min="0" max="5000" value="1500" title="1500" oninput="updateValue('distance')" class="range-slider">
-        </div>
+        <label for="distance">Distance per Month (km): <span id="distanceValue">1500</span></label>
+        <input type="range" id="distance" min="0" max="5000" value="1500" title="1500" oninput="updateValue('distance')">
 
-        <div class="range-container">
-            <label for="evEfficiency" class="range-label">EV Efficiency (Wh/km): <span id="evEfficiencyValue">200</span></label>
-            <input type="range" id="evEfficiency" min="50" max="500" value="200" title="200" oninput="updateValue('evEfficiency')" class="range-slider">
-        </div>
+        <label for="evEfficiency">EV Efficiency (Wh/km): <span id="evEfficiencyValue">200</span></label>
+        <input type="range" id="evEfficiency" min="50" max="500" value="200" title="200" oninput="updateValue('evEfficiency')">
 
-        <div class="range-container">
-            <label for="electricityCost" class="range-label">Cost of Electricity (Rs/kWh): <span id="electricityCostValue">10</span></label>
-            <input type="range" id="electricityCost" min="1" max="50" value="10" title="10" oninput="updateValue('electricityCost')" class="range-slider">
-        </div>
+        <label for="electricityCost">Cost of Electricity (Rs/kWh): <span id="electricityCostValue">10</span></label>
+        <input type="range" id="electricityCost" min="1" max="50" value="10" title="10" oninput="updateValue('electricityCost')">
 
-        <div class="range-container">
-            <label for="petrolCost" class="range-label">Cost of Petrol (Rs/litre): <span id="petrolCostValue">100</span></label>
-            <input type="range" id="petrolCost" min="50" max="200" value="100" title="100" oninput="updateValue('petrolCost')" class="range-slider">
-        </div>
+        <label for="petrolCost">Cost of Petrol (Rs/litre): <span id="petrolCostValue">100</span></label>
+        <input type="range" id="petrolCost" min="50" max="200" value="100" title="100" oninput="updateValue('petrolCost')">
 
-        <div class="range-container">
-            <label for="petrolMileage" class="range-label">Petrol Car Mileage (km/litre): <span id="petrolMileageValue">15</span></label>
-            <input type="range" id="petrolMileage" min="5" max="30" value="15" title="15" oninput="updateValue('petrolMileage')" class="range-slider">
-        </div>
+        <label for="petrolMileage">Petrol Car Mileage (km/litre): <span id="petrolMileageValue">15</span></label>
+        <input type="range" id="petrolMileage" min="5" max="30" value="15" title="15" oninput="updateValue('petrolMileage')">
 
         <button onclick="calculateSavings()">Calculate Savings</button>
 
@@ -67,6 +48,8 @@
         <div id="savingsBarChart"></div>
         <div id="co2ReductionBarChart"></div>
     </div>
+    <!-- Take to Top Button -->
+    <div id="takeToTop" onclick="scrollToTop()">▲</div>
     <script src="script.js"></script>
 </body>
 </html>
