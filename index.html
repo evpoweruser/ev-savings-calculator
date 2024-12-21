@@ -1,57 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EV Savings Calculator</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<title>EV Savings Calculator</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+input[type="number"] {
+  width: 150px;
+  padding: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+#results {
+  margin-top: 20px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+.error {
+    color: red;
+    font-size: smaller;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>EV Savings Calculator</h1>
-        <label for="country">Select Country:</label>
-        <select id="country">
-            <option value="india">India</option>
-            <option value="usa">United States</option>
-            <option value="germany">Germany</option>
-            <option value="china">China</option>
-            <option value="tamilnadu">Tamil Nadu</option>
-        </select>
 
-        <label for="distance">Distance per Month (km): <span id="distanceValue">1500</span></label>
-        <input type="range" id="distance" min="0" max="5000" value="1500" title="1500" oninput="updateValue('distance')">
+<h1>EV Savings Calculator</h1>
 
-        <label for="evEfficiency">EV Efficiency (Wh/km): <span id="evEfficiencyValue">200</span></label>
-        <input type="range" id="evEfficiency" min="50" max="500" value="200" title="200" oninput="updateValue('evEfficiency')">
+<label for="carPrice">Car Price:</label>
+<input type="number" id="carPrice" value="30000" min="0"><span class="error" id="carPriceError"></span>
 
-        <label for="electricityCost">Cost of Electricity (Rs/kWh): <span id="electricityCostValue">10</span></label>
-        <input type="range" id="electricityCost" min="1" max="50" value="10" title="10" oninput="updateValue('electricityCost')">
+<label for="gasCarMpg">Gas Car MPG:</label>
+<input type="number" id="gasCarMpg" value="25" min="1"><span class="error" id="gasCarMpgError"></span>
 
-        <label for="petrolCost">Cost of Petrol (Rs/litre): <span id="petrolCostValue">100</span></label>
-        <input type="range" id="petrolCost" min="50" max="200" value="100" title="100" oninput="updateValue('petrolCost')">
+<label for="evMpge">EV MPGe:</label>
+<input type="number" id="evMpge" value="100" min="1"><span class="error" id="evMpgeError"></span>
 
-        <label for="petrolMileage">Petrol Car Mileage (km/litre): <span id="petrolMileageValue">15</span></label>
-        <input type="range" id="petrolMileage" min="5" max="30" value="15" title="15" oninput="updateValue('petrolMileage')">
+<label for="gasPrice">Gas Price ($/gallon):</label>
+<input type="number" id="gasPrice" value="4" min="0"><span class="error" id="gasPriceError"></span>
 
-        <button onclick="calculateSavings()">Calculate Savings</button>
+<label for="electricityPrice">Electricity Price ($/kWh):</label>
+<input type="number" id="electricityPrice" value="0.15" min="0"><span class="error" id="electricityPriceError"></span>
 
-        <h2>Results</h2>
-        <p id="savings">Monthly EV Savings: Rs 0.00</p>
-        <p id="co2Emissions">Monthly CO2 Emissions from Petrol Car: 0.00 kg</p>
-        <p id="co2ReductionCurrentMix">CO2 Reduction with Current Energy Mix: 0.00 kg</p>
-        <p id="co2ReductionRenewable">CO2 Reduction with Renewable Energy: 0.00 kg</p>
-        <p id="equivalentEVDistance">Equivalent EV Distance to produce same CO2 as Petrol Car: 0.00 km</p>
-        
-        <div id="pieChart"></div>
-        <div id="electricityPieChart"></div>
-        <div id="savingsBarChart"></div>
-        <div id="co2ReductionBarChart"></div>
-    </div>
-    <!-- Take to Top Button -->
-    <div id="takeToTop" onclick="scrollToTop()">
-        <img src="up-arrow.png" alt="Go to top">
-    </div>
-    <script src="script.js"></script>
+<label for="annualMiles">Annual Miles Driven:</label>
+<input type="number" id="annualMiles" value="12000" min="0"><span class="error" id="annualMilesError"></span>
+
+<label for="yearsOwned">Years Owned:</label>
+<input type="number" id="yearsOwned" value="5" min="1"><span class="error" id="yearsOwnedError"></span>
+
+<button onclick="calculateSavings()">Calculate Savings</button>
+
+<div id="results">
+</div>
+
+<script>
+function calculateSavings() {
+    // Basic Input Validation
+    let carPrice = validateInput("carPrice");
+    let gasCarMpg = validateInput("gasCarMpg");
+    let evMpge = validateInput("evMpge");
+    let gasPrice = validateInput("gasPrice");
+    let electricityPrice = validateInput("electricityPrice");
+    let annualMiles = validateInput("annualMiles");
+    let yearsOwned = validateInput("yearsOwned");
+
+    if (carPrice === false || gasCarMpg === false || evMpge === false || gasPrice === false || electricityPrice === false || annualMiles === false || yearsOwned === false) {
+        return; // Stop calculation if there are errors
+    }
+
+
+  const totalMiles = annualMiles * yearsOwned;
+  const gasCarCost = (totalMiles / gasCarMpg) * gasPrice;
+  const evCost = (totalMiles / evMpge) * electricityPrice;
+  const savings = gasCarCost - evCost;
+
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.innerHTML = `
+    <h2>Results</h2>
+    <p>Total Gas Car Cost: $${gasCarCost.toFixed(2)}</p>
+    <p>Total EV Cost: $${evCost.toFixed(2)}</p>
+    <p>Total Savings: $${savings.toFixed(2)}</p>
+  `;
+}
+
+function validateInput(inputId){
+    let inputField = document.getElementById(inputId);
+    let errorField = document.getElementById(inputId + "Error");
+    let value = parseFloat(inputField.value);
+
+    if (isNaN(value) || value < parseFloat(inputField.min)){
+        errorField.textContent = "Please enter a valid number greater than or equal to " + inputField.min;
+        return false;
+    } else {
+        errorField.textContent = "";
+        return value;
+    }
+}
+</script>
+
 </body>
 </html>
