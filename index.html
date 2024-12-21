@@ -2,55 +2,31 @@
 <html>
 <head>
 <title>EV Savings Calculator</title>
-<style>
-body {
-  font-family: sans-serif;
-}
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-input[type="number"] {
-  width: 150px;
-  padding: 5px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-}
-#results {
-  margin-top: 20px;
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
-}
-.error {
-    color: red;
-    font-size: smaller;
-}
-</style>
 </head>
 <body>
 
 <h1>EV Savings Calculator</h1>
 
 <label for="carPrice">Car Price:</label>
-<input type="number" id="carPrice" value="30000" min="0"><span class="error" id="carPriceError"></span>
+<input type="number" id="carPrice" value="30000">
 
 <label for="gasCarMpg">Gas Car MPG:</label>
-<input type="number" id="gasCarMpg" value="25" min="1"><span class="error" id="gasCarMpgError"></span>
+<input type="number" id="gasCarMpg" value="25">
 
 <label for="evMpge">EV MPGe:</label>
-<input type="number" id="evMpge" value="100" min="1"><span class="error" id="evMpgeError"></span>
+<input type="number" id="evMpge" value="100">
 
 <label for="gasPrice">Gas Price ($/gallon):</label>
-<input type="number" id="gasPrice" value="4" min="0"><span class="error" id="gasPriceError"></span>
+<input type="number" id="gasPrice" value="4">
 
 <label for="electricityPrice">Electricity Price ($/kWh):</label>
-<input type="number" id="electricityPrice" value="0.15" min="0"><span class="error" id="electricityPriceError"></span>
+<input type="number" id="electricityPrice" value="0.15">
 
 <label for="annualMiles">Annual Miles Driven:</label>
-<input type="number" id="annualMiles" value="12000" min="0"><span class="error" id="annualMilesError"></span>
+<input type="number" id="annualMiles" value="12000">
 
 <label for="yearsOwned">Years Owned:</label>
-<input type="number" id="yearsOwned" value="5" min="1"><span class="error" id="yearsOwnedError"></span>
+<input type="number" id="yearsOwned" value="5">
 
 <button onclick="calculateSavings()">Calculate Savings</button>
 
@@ -59,19 +35,13 @@ input[type="number"] {
 
 <script>
 function calculateSavings() {
-    // Basic Input Validation
-    let carPrice = validateInput("carPrice");
-    let gasCarMpg = validateInput("gasCarMpg");
-    let evMpge = validateInput("evMpge");
-    let gasPrice = validateInput("gasPrice");
-    let electricityPrice = validateInput("electricityPrice");
-    let annualMiles = validateInput("annualMiles");
-    let yearsOwned = validateInput("yearsOwned");
-
-    if (carPrice === false || gasCarMpg === false || evMpge === false || gasPrice === false || electricityPrice === false || annualMiles === false || yearsOwned === false) {
-        return; // Stop calculation if there are errors
-    }
-
+  const carPrice = document.getElementById("carPrice").value;
+  const gasCarMpg = document.getElementById("gasCarMpg").value;
+  const evMpge = document.getElementById("evMpge").value;
+  const gasPrice = document.getElementById("gasPrice").value;
+  const electricityPrice = document.getElementById("electricityPrice").value;
+  const annualMiles = document.getElementById("annualMiles").value;
+  const yearsOwned = document.getElementById("yearsOwned").value;
 
   const totalMiles = annualMiles * yearsOwned;
   const gasCarCost = (totalMiles / gasCarMpg) * gasPrice;
@@ -81,24 +51,10 @@ function calculateSavings() {
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = `
     <h2>Results</h2>
-    <p>Total Gas Car Cost: $${gasCarCost.toFixed(2)}</p>
-    <p>Total EV Cost: $${evCost.toFixed(2)}</p>
-    <p>Total Savings: $${savings.toFixed(2)}</p>
+    <p>Total Gas Car Cost: $${gasCarCost}</p>
+    <p>Total EV Cost: $${evCost}</p>
+    <p>Total Savings: $${savings}</p>
   `;
-}
-
-function validateInput(inputId){
-    let inputField = document.getElementById(inputId);
-    let errorField = document.getElementById(inputId + "Error");
-    let value = parseFloat(inputField.value);
-
-    if (isNaN(value) || value < parseFloat(inputField.min)){
-        errorField.textContent = "Please enter a valid number greater than or equal to " + inputField.min;
-        return false;
-    } else {
-        errorField.textContent = "";
-        return value;
-    }
 }
 </script>
 
