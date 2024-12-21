@@ -1,10 +1,3 @@
-function updateValue(id) {
-    const slider = document.getElementById(id);
-    const value = slider.value;
-    document.getElementById(id + 'Value').textContent = value;
-    slider.title = value; // Update the title attribute to show the value as a tooltip
-}
-
 function calculateSavings() {
     // Get input values
     const distance = parseFloat(document.getElementById('distance').value);
