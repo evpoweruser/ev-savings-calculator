@@ -5,8 +5,23 @@ function updateValue(id) {
     valueSpan.textContent = slider.value;
 }
 
+// Function to get CO2 reduction factor based on selected country
+function getCO2ReductionFactor(country) {
+    const factors = {
+        india: 0.0005,
+        usa: 0.0004,
+        germany: 0.0003,
+        china: 0.0006,
+        tamilnadu: 0.00045
+    };
+    return factors[country] || 0.0005; // default factor if country not found
+}
+
 // Function to calculate savings
 function calculateSavings() {
+    const country = document.getElementById("country").value;
+    const co2ReductionFactor = getCO2ReductionFactor(country);
+
     const distance = parseFloat(document.getElementById("distance").value);
     const evEfficiency = parseFloat(document.getElementById("evEfficiency").value);
     const electricityCost = parseFloat(document.getElementById("electricityCost").value);
@@ -26,11 +41,11 @@ function calculateSavings() {
 
     // CO2 emissions calculations
     const co2EmissionPetrol = petrolConsumption * 2.31; // CO2 per litre of petrol
-    const co2ReductionCurrentMix = co2EmissionPetrol - (energyConsumed * 0.0005); // Assumed CO2 reduction factor
+    const co2ReductionCurrentMix = co2EmissionPetrol - (energyConsumed * co2ReductionFactor); // Adjusted CO2 reduction factor
     const co2ReductionRenewable = co2EmissionPetrol - (energyConsumed * 0.0001); // Assuming renewable energy
 
     // Equivalent EV distance to produce same CO2 as Petrol Car
-    const equivalentEVDistance = co2EmissionPetrol / (evEfficiency * 0.0005);
+    const equivalentEVDistance = co2EmissionPetrol / (evEfficiency * co2ReductionFactor);
 
     // Trees planted equivalent calculation
     const treesPlanted = Math.floor(co2ReductionRenewable / 0.3); // 1 tree absorbs 0.3 kg CO2/year
