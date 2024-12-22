@@ -104,7 +104,6 @@ function scrollToTop() {
 
 // Adding an event listener to run the function when the button is clicked
 document.getElementById('takeToTop').addEventListener('click', scrollToTop);
-
 // Function to create tree animation
 function createTreeAnimation(treesCount) {
     const treeContainer = document.getElementById('treeAnimation');
