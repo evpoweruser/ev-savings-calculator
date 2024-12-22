@@ -54,19 +54,19 @@ input[type="number"]:focus, select:focus {
 
 .range-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    margin: 10px 0;
+    margin: 15px 0;
 }
 
 .range-label {
-    flex-basis: 40%;
     font-size: 1.1em;
     color: #00FFFF; /* Neon blue color */
+    margin-bottom: 5px;
 }
 
 .range-slider {
-    flex-basis: 55%;
+    width: 80%;
 }
 
 input[type="range"] {
