@@ -48,3 +48,15 @@ function calculateSavings() {
 function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Function to create tree animation
+function createTreeAnimation(treesCount) {
+    const treeContainer = document.getElementById('treeAnimation');
+    treeContainer.innerHTML = ''; // Clear previous animation
+    for (let i = 0; i < treesCount; i++) {
+        const tree = document.createElement('div');
+        tree.classList.add('tree');
+        tree.style.animationDelay = `${i * 0.1}s`; // Stagger the animation start times
+        treeContainer.appendChild(tree);
+    }
+}
