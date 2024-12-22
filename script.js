@@ -172,8 +172,26 @@ p {
     100% {
         transform: translateY(0);
     }
-}
+document.addEventListener('DOMContentLoaded', function () {
+    // Create the scroll-to-top button
+    const scrollToTopButton = document.createElement('div');
+    scrollToTopButton.id = 'takeToTop';
+    scrollToTopButton.innerHTML = '<img src="top-arrow.png" alt="Scroll to Top">';
+    document.body.appendChild(scrollToTopButton);
 
-.slingshot-effect {
-    animation: slingshot 0.5s ease-out;
-}
+    // Scroll-to-top functionality with slingshot effect
+    scrollToTopButton.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        scrollToTopButton.classList.add('slingshot-effect');
+        setTimeout(() => scrollToTopButton.classList.remove('slingshot-effect'), 500);
+    });
+
+    // Optional: Show the button only when scrolled down
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 200) {
+            scrollToTopButton.style.display = 'block';
+        } else {
+            scrollToTopButton.style.display = 'none';
+        }
+    });
+});
