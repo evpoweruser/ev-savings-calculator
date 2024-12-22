@@ -286,7 +286,6 @@ body {
     from { opacity: 0; }
     to { opacity: 1; }
 }
-
 /* Apply the background to the entire body */
 body {
     background: url('assets/background.gif') no-repeat center center fixed; 
@@ -303,4 +302,27 @@ body {
     position: relative;
     z-index: 10;
     /* Add other styles as needed */
+}
+
+/* Styles for tree animation */
+#treeAnimation {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.tree {
+    width: 50px;
+    height: 50px;
+    background: url('assets/background.gif') no-repeat center center;
+    background-size: contain;
+    animation: playGif 1s infinite;
+}
+
+@keyframes playGif {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
