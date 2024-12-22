@@ -1,10 +1,13 @@
-/* Define CSS Variables */
+/* Define CSS Variables for easier theme customization */
 :root {
     --neon-blue: #00FFFF;
     --hover-blue: #00CCFF;
     --dark-bg: rgba(0, 0, 50, 0.7);
+    --text-white: #fff;
+    --shadow-blue: rgba(0, 255, 255, 0.5);
 }
 
+/* General body styling */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('assets/background.gif') no-repeat center center fixed; 
@@ -13,45 +16,59 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    color: #fff;
+    color: var(--text-white);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* Container for content */
 .container {
-    background: rgba(0, 0, 50, 0.9);
+    background: var(--dark-bg);
     border-radius: 10px;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 25px var(--shadow-blue);
     padding: 30px;
     max-width: 600px;
     width: 100%;
     animation: fadeIn 1s ease-in-out;
 }
 
-h1, h2, label, .range-label, .chart-label {
-    color: var(--neon-blue);
-}
-
+/* Header and labels */
 h1, h2 {
     text-align: center;
+    color: var(--neon-blue);
     margin-bottom: 20px;
 }
 
-input[type="number"], select, input[type="range"], button {
+label, .range-label, .chart-label {
+    color: var(--neon-blue);
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
+/* Input and Select Styles */
+input[type="range"], input[type="number"], select, button {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    box-sizing: border-box;
     border-radius: 5px;
     background-color: var(--dark-bg);
-    color: #fff;
+    color: var(--text-white);
     border: 2px solid var(--neon-blue);
     transition: all 0.3s;
 }
 
 input[type="range"], button {
     height: 8px;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb,
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--neon-blue);
     cursor: pointer;
 }
 
@@ -70,23 +87,19 @@ button:hover {
     background-color: var(--hover-blue);
 }
 
-input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 8px;
-    background: var(--dark-bg);
-    border-radius: 5px;
+/* Animation Keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--neon-blue);
-    cursor: pointer;
-}
-
+/* Scroll to Top Button */
 #takeToTop {
     position: fixed;
     bottom: 30px;
@@ -99,7 +112,7 @@ input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 255, 255, 0.5);
+    box-shadow: 0 4px 8px var(--shadow-blue);
     transition: background-color 0.3s, transform 0.3s;
 }
 
@@ -108,17 +121,35 @@ input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb
     transform: scale(1.1);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
 }
 
-#pieChart, #electricityPieChart {
-    margin-top: 20px;
-    animation: fadeIn 1.5s ease-in-out;
+/* Tree Animation */
+#treeAnimation {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
 }
 
-/* Scrollbar styles */
+.tree {
+    width: 50px;
+    height: 50px;
+    background: url('assets/tree-icon.png') no-repeat center center;
+    background-size: contain;
+    animation: playGif 1s infinite;
+}
+
+@keyframes playGif {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
@@ -133,26 +164,4 @@ input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb
 ::-webkit-scrollbar-track {
     background: rgba(0, 0, 50, 0.3);
     border-radius: 6px;
-}
-
-#treeAnimation {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    z-index: 20;
-}
-
-.tree {
-    width: 50px;
-    height: 50px;
-    background: url('assets/background.gif') no-repeat center center;
-    background-size: contain;
-    animation: playGif 1s infinite;
-}
-
-@keyframes playGif {
-    from { opacity: 0; }
-    to { opacity: 1; }
 }
