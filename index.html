@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EV Savings Calculator</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Ensure this is the correct path -->
+    <link rel="stylesheet" href="style.css"> <!-- Ensure this is the correct path -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js" defer></script>
 </head>
-
 <body>
     <div class="content">
         <div class="container">
@@ -21,24 +19,24 @@
                 <option value="china">China</option>
                 <option value="tamilnadu">Tamil Nadu</option>
             </select>
-
+        
             <label for="distance">Distance per Month (km): <span id="distanceValue">1500</span></label>
             <input type="range" id="distance" min="0" max="5000" value="1500" title="1500" oninput="updateValue('distance')">
-
+        
             <label for="evEfficiency">EV Efficiency (Wh/km): <span id="evEfficiencyValue">200</span></label>
             <input type="range" id="evEfficiency" min="50" max="500" value="200" title="200" oninput="updateValue('evEfficiency')">
-
+        
             <label for="electricityCost">Cost of Electricity (Rs/kWh): <span id="electricityCostValue">10</span></label>
             <input type="range" id="electricityCost" min="1" max="50" value="10" title="10" oninput="updateValue('electricityCost')">
-
+        
             <label for="petrolCost">Cost of Petrol (Rs/litre): <span id="petrolCostValue">100</span></label>
             <input type="range" id="petrolCost" min="50" max="200" value="100" title="100" oninput="updateValue('petrolCost')">
-
+        
             <label for="petrolMileage">Petrol Car Mileage (km/litre): <span id="petrolMileageValue">15</span></label>
             <input type="range" id="petrolMileage" min="5" max="30" value="15" title="15" oninput="updateValue('petrolMileage')">
-
+        
             <button onclick="calculateSavings()">Calculate Savings</button>
-
+        
             <h2>Results</h2>
             <p id="savings">Monthly EV Savings: Rs 0.00</p>
             <p id="co2Emissions">Monthly CO2 Emissions from Petrol Car: 0.00 kg</p>
@@ -46,21 +44,19 @@
             <p id="co2ReductionRenewable">CO2 Reduction with Renewable Energy: 0.00 kg</p>
             <p id="equivalentEVDistance">Equivalent EV Distance to produce same CO2 as Petrol Car: 0.00 km</p>
             <p id="treesPlanted">Equivalent Trees Planted: 0</p>
-
+        
             <div id="pieChart"></div>
             <div id="electricityPieChart"></div>
             <div id="savingsBarChart"></div>
             <div id="co2ReductionBarChart"></div>
             <div id="treeAnimation"></div>
         </div>
-
+        
         <!-- Take to Top Button -->
         <div id="takeToTop" onclick="scrollToTop()">
             <img src="up-arrow.png" alt="Go to top">
         </div>
     </div>
-
     <script src="script.js" defer></script>
 </body>
-
 </html>
