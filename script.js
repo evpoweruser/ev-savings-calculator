@@ -48,7 +48,7 @@ function calculateSavings() {
     const equivalentEVDistance = co2EmissionPetrol / (evEfficiency * co2ReductionFactor);
 
     // Trees planted equivalent calculation
-    const treesPlanted = Math.floor(co2ReductionRenewable / 0.3); // 1 tree absorbs 0.3 kg CO2/year
+    const treesPlanted = Math.ceil(co2ReductionRenewable / 22); // 1 tree absorbs 22 kg CO2/year
 
     // Update the results in the DOM
     document.getElementById("savings").textContent = `Monthly EV Savings: Rs ${savings.toFixed(2)}`;
