@@ -91,13 +91,8 @@ function calculateSavings() {
 
 // Scroll to top function with slingshot animation
 function scrollToTop() {
-    const takeToTopButton = document.getElementById('takeToTop');
-    takeToTopButton.classList.add('slingshot-effect');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setTimeout(() => {
-        takeToTopButton.classList.remove('slingshot-effect');
-    }, 500);
 }
 
 // Adding an event listener to run the function when the button is clicked
-document.querySelector('button').addEventListener('click', calculateSavings);
+document.getElementById('takeToTop').addEventListener('click', scrollToTop);
