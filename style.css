@@ -200,24 +200,6 @@ select.location-dropdown option {
     transition: background-color 0.3s, transform 0.3s;
 }
 
-/* Scroll to Top Button */
-#takeToTop {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background-color: #00FFFF; /* Neon blue background */
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 255, 255, 0.5); /* Neon blue shadow */
-    transition: background-color 0.3s, transform 0.3s;
-}
-
 #takeToTop img {
     width: 24px;
     height: 24px;
@@ -244,4 +226,21 @@ select.location-dropdown option {
 
 #takeToTop {
     animation: slingshot 1s ease-in-out, bounce 1s ease-in-out infinite;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.5); /* Neon blue with transparency */
+    border-radius: 6px; /* Round edges */
+    border: 3px solid rgba(0, 0, 50, 0.7);  /* Transparent tube effect */
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 50, 0.3); /* Semi-transparent dark blue */
+    border-radius: 6px; /* Round edges */
 }
