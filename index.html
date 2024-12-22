@@ -9,11 +9,13 @@
 </head>
 <body>
     <div class="content">
-        <!-- Your content goes here -->
+        <!-- Main container -->
         <div class="container">
             <h1>EV Savings Calculator</h1>
+            
+            <!-- Country Selection -->
             <label for="country">Select Country:</label>
-            <select id="country">
+            <select id="country" aria-label="Select country">
                 <option value="india">India</option>
                 <option value="usa">United States</option>
                 <option value="germany">Germany</option>
@@ -21,23 +23,26 @@
                 <option value="tamilnadu">Tamil Nadu</option>
             </select>
         
+            <!-- Input Sliders -->
             <label for="distance">Distance per Month (km): <span id="distanceValue">1500</span></label>
-            <input type="range" id="distance" min="0" max="5000" value="1500" title="1500" oninput="updateValue('distance')">
-        
+            <input type="range" id="distance" min="0" max="5000" value="1500" title="1500" oninput="updateValue('distance')" aria-label="Distance per month">
+
             <label for="evEfficiency">EV Efficiency (Wh/km): <span id="evEfficiencyValue">200</span></label>
-            <input type="range" id="evEfficiency" min="50" max="500" value="200" title="200" oninput="updateValue('evEfficiency')">
-        
+            <input type="range" id="evEfficiency" min="50" max="500" value="200" title="200" oninput="updateValue('evEfficiency')" aria-label="EV efficiency in Wh/km">
+
             <label for="electricityCost">Cost of Electricity (Rs/kWh): <span id="electricityCostValue">10</span></label>
-            <input type="range" id="electricityCost" min="1" max="50" value="10" title="10" oninput="updateValue('electricityCost')">
-        
+            <input type="range" id="electricityCost" min="1" max="50" value="10" title="10" oninput="updateValue('electricityCost')" aria-label="Cost of electricity per kWh">
+
             <label for="petrolCost">Cost of Petrol (Rs/litre): <span id="petrolCostValue">100</span></label>
-            <input type="range" id="petrolCost" min="50" max="200" value="100" title="100" oninput="updateValue('petrolCost')">
-        
+            <input type="range" id="petrolCost" min="50" max="200" value="100" title="100" oninput="updateValue('petrolCost')" aria-label="Cost of petrol per litre">
+
             <label for="petrolMileage">Petrol Car Mileage (km/litre): <span id="petrolMileageValue">15</span></label>
-            <input type="range" id="petrolMileage" min="5" max="30" value="15" title="15" oninput="updateValue('petrolMileage')">
-        
+            <input type="range" id="petrolMileage" min="5" max="30" value="15" title="15" oninput="updateValue('petrolMileage')" aria-label="Petrol car mileage (km per litre)">
+
+            <!-- Calculate Button -->
             <button onclick="calculateSavings()">Calculate Savings</button>
-        
+
+            <!-- Results Section -->
             <h2>Results</h2>
             <p id="savings">Monthly EV Savings: Rs 0.00</p>
             <p id="co2Emissions">Monthly CO2 Emissions from Petrol Car: 0.00 kg</p>
@@ -45,7 +50,8 @@
             <p id="co2ReductionRenewable">CO2 Reduction with Renewable Energy: 0.00 kg</p>
             <p id="equivalentEVDistance">Equivalent EV Distance to produce same CO2 as Petrol Car: 0.00 km</p>
             <p id="treesPlanted">Equivalent Trees Planted: 0</p>
-        
+
+            <!-- Chart Containers -->
             <div id="pieChart"></div>
             <div id="electricityPieChart"></div>
             <div id="savingsBarChart"></div>
@@ -53,11 +59,12 @@
             <div id="treeAnimation"></div>
         </div>
         
-        <!-- Take to Top Button -->
-        <div id="takeToTop" onclick="scrollToTop()">
+        <!-- Scroll to Top Button -->
+        <div id="takeToTop" onclick="scrollToTop()" title="Go to top">
             <img src="up-arrow.png" alt="Go to top">
         </div>
         
+        <!-- JavaScript -->
         <script src="script.js" defer></script>
     </div>
 </body>
