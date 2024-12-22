@@ -15,9 +15,13 @@ function calculateSavings() {
     const co2PerLitrePetrol = 2.31; // kg of CO2 per litre of petrol
     const co2PerKwhCurrentMix = 0.5; // kg of CO2 per kWh of electricity
 
-    // Check if all input values are valid
-    if (isNaN(distance) || isNaN(evEfficiency) || isNaN(electricityCost) || isNaN(petrolCost) || isNaN(petrolMileage)) {
-        alert("Please enter valid inputs");
+    // Input validation (positive values only)
+    if (isNaN(distance) || distance <= 0 ||
+        isNaN(evEfficiency) || evEfficiency <= 0 ||
+        isNaN(electricityCost) || electricityCost <= 0 ||
+        isNaN(petrolCost) || petrolCost <= 0 ||
+        isNaN(petrolMileage) || petrolMileage <= 0) {
+        alert("Please enter valid positive inputs");
         return;
     }
 
@@ -80,38 +84,4 @@ function calculateSavings() {
     const savingsLayout = {
         title: 'Savings Comparison'
     };
-    Plotly.newPlot('savingsBarChart', savingsData, savingsLayout);
-
-    // Plotly bar chart for CO2 emissions reduction
-    const co2ReductionData = [{
-        x: ['Petrol CO2 Emissions', 'EV CO2 Emissions', 'CO2 Reduction (Current Mix)', 'CO2 Reduction (Renewable)'],
-        y: [petrolCO2Emissions, evCO2EmissionsCurrentMix, co2ReductionCurrentMix, co2ReductionRenewable],
-        type: 'bar'
-    }];
-    const co2ReductionLayout = {
-        title: 'CO2 Emissions Reduction Comparison'
-    };
-    Plotly.newPlot('co2ReductionBarChart', co2ReductionData, co2ReductionLayout);
-
-    // Tree animation
-    createTreeAnimation(Math.round(treesPlanted));
-}
-
-// Scroll to top function with slingshot animation
-function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Adding an event listener to run the function when the button is clicked
-document.getElementById('takeToTop').addEventListener('click', scrollToTop);
-// Function to create tree animation
-function createTreeAnimation(treesCount) {
-    const treeContainer = document.getElementById('treeAnimation');
-    treeContainer.innerHTML = ''; // Clear previous animation
-    for (let i = 0; i < treesCount; i++) {
-        const tree = document.createElement('div');
-        tree.classList.add('tree');
-        tree.style.animationDelay = `${i * 0.1}s`; // Stagger the animation start times
-        treeContainer.appendChild(tree);
-    }
-}
+    Plotly.new
