@@ -37,12 +37,17 @@ function calculateSavings() {
     // Calculate equivalent EV distance to produce same CO2 as petrol car
     const equivalentEVDistance = (petrolCO2Emissions / co2PerKwhCurrentMix) / evEfficiency;
 
+    // Calculate trees planted
+    const treesPerKgCO2 = 0.068; // Approximate number of trees to offset 1 kg of CO2
+    const treesPlanted = co2ReductionRenewable * treesPerKgCO2;
+
     // Update the results in the HTML
     document.getElementById('savings').textContent = `Monthly EV Savings: Rs ${savings.toFixed(2)}`;
     document.getElementById('co2Emissions').textContent = `Monthly CO2 Emissions from Petrol Car: ${petrolCO2Emissions.toFixed(2)} kg`;
     document.getElementById('co2ReductionCurrentMix').textContent = `CO2 Reduction with Current Energy Mix: ${co2ReductionCurrentMix.toFixed(2)} kg`;
     document.getElementById('co2ReductionRenewable').textContent = `CO2 Reduction with Renewable Energy: ${co2ReductionRenewable.toFixed(2)} kg`;
     document.getElementById('equivalentEVDistance').textContent = `Equivalent EV Distance to produce same CO2 as Petrol Car: ${equivalentEVDistance.toFixed(2)} km`;
+    document.getElementById('treesPlanted').textContent = `Equivalent Trees Planted: ${Math.round(treesPlanted)}`;
 
     // Plotly pie chart for petrol vs EV cost
     const pieData = [{
@@ -87,6 +92,9 @@ function calculateSavings() {
         title: 'CO2 Emissions Reduction Comparison'
     };
     Plotly.newPlot('co2ReductionBarChart', co2ReductionData, co2ReductionLayout);
+
+    // Tree animation
+    createTreeAnimation(Math.round(treesPlanted));
 }
 
 // Scroll to top function with slingshot animation
@@ -96,3 +104,15 @@ function scrollToTop() {
 
 // Adding an event listener to run the function when the button is clicked
 document.getElementById('takeToTop').addEventListener('click', scrollToTop);
+
+// Function to create tree animation
+function createTreeAnimation(treesCount) {
+    const treeContainer = document.getElementById('treeAnimation');
+    treeContainer.innerHTML = ''; // Clear previous animation
+    for (let i = 0; i < treesCount; i++) {
+        const tree = document.createElement('div');
+        tree.classList.add('tree');
+        tree.style.animationDelay = `${i * 0.1}s`; // Stagger the animation start times
+        treeContainer.appendChild(tree);
+    }
+}
