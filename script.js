@@ -58,7 +58,51 @@ function calculateSavings() {
     document.getElementById("equivalentEVDistance").textContent = `Equivalent EV Distance to produce same CO2 as Petrol Car: ${equivalentEVDistance.toFixed(2)} km`;
     document.getElementById("treesPlanted").textContent = `Equivalent Trees Planted: ${treesPlanted}`;
 }
+// Function to render pie charts and bar charts
+function renderCharts() {
+    const savingsData = [/* data for savings */];
+    const co2ReductionData = [/* data for CO2 reduction */];
 
+    // Render savings pie chart
+    const savingsPieData = [{
+        values: savingsData,
+        labels: ['EV Savings', 'Petrol Cost'],
+        type: 'pie'
+    }];
+    Plotly.newPlot('savingsPieChart', savingsPieData);
+
+    // Render CO2 reduction pie chart
+    const co2ReductionPieData = [{
+        values: co2ReductionData,
+        labels: ['Current Mix CO2 Reduction', 'Renewable CO2 Reduction'],
+        type: 'pie'
+    }];
+    Plotly.newPlot('co2ReductionPieChart', co2ReductionPieData);
+
+    // Render savings bar chart
+    const savingsBarData = [{
+        x: ['EV Savings', 'Petrol Cost'],
+        y: savingsData,
+        type: 'bar'
+    }];
+    Plotly.newPlot('savingsBarChart', savingsBarData);
+
+    // Render CO2 reduction bar chart
+    const co2ReductionBarData = [{
+        x: ['Current Mix CO2 Reduction', 'Renewable CO2 Reduction'],
+        y: co2ReductionData,
+        type: 'bar'
+    }];
+    Plotly.newPlot('co2ReductionBarChart', co2ReductionBarData);
+}
+
+// Call renderCharts() after calculating savings
+function calculateSavings() {
+    // Existing code...
+
+    // Call the renderCharts function
+    renderCharts();
+}
 // Scroll to top functionality
 function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
