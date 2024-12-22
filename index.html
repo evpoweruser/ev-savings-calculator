@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EV Savings Calculator</title>
-    <link rel="stylesheet" href="style.css"> <!-- Ensure this is the correct path -->
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js" defer></script>
 </head>
 <body>
     <div class="content">
         <div class="container">
             <h1>EV Savings Calculator</h1>
+            
             <label for="country">Select Country:</label>
             <select id="country">
                 <option value="india">India</option>
@@ -45,8 +46,8 @@
             <p id="equivalentEVDistance">Equivalent EV Distance to produce same CO2 as Petrol Car: 0.00 km</p>
             <p id="treesPlanted">Equivalent Trees Planted: 0</p>
         
-            <div id="pieChart"></div>
-            <div id="electricityPieChart"></div>
+            <div id="savingsPieChart"></div>
+            <div id="co2ReductionPieChart"></div>
             <div id="savingsBarChart"></div>
             <div id="co2ReductionBarChart"></div>
             <div id="treeAnimation"></div>
