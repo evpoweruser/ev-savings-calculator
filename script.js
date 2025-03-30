@@ -121,19 +121,27 @@ function renderCharts(savingsData, co2ReductionData) {
 function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+<script>
+  function createTreeAnimation(treesCount) {
+      const treeContainer = document.getElementById('treeAnimation');
+      if (!treeContainer) {
+          return;
+      }
+      treeContainer.innerHTML = ''; // Clear previous animation
 
-// Function to create tree animation
-function createTreeAnimation(treesCount) {
-    const treeContainer = document.getElementById('treeAnimation');
-    if(!treeContainer){
-        return; // Exit if the container doesn't exist.
-    }
-    treeContainer.innerHTML = ''; // Clear previous animation
-    for (let i = 0; i < treesCount; i++) {
-        const tree = document.createElement('div');
-        tree.classList.add('tree');
-        tree.style.animationDelay = `${i * 0.1}s`; // Stagger the animation start times
-        treeContainer.appendChild(tree);
-    }
-}
+      const animations = ['sway', 'scale-fade', 'float', 'fade-rotate']; // Array of animation classes
+      const numAnimations = animations.length;
 
+      for (let i = 0; i < treesCount; i++) {
+          const tree = document.createElement('div');
+          tree.classList.add('tree');
+          const randomAnimationIndex = Math.floor(Math.random() * numAnimations);
+          tree.classList.add(animations[randomAnimationIndex]); // Apply a random animation class
+          tree.style.animationDelay = `${i * 0.5}s`; // Stagger the animation start times, increased stagger
+          treeContainer.appendChild(tree);
+      }
+  }
+
+  // Example usage:  Call this function with the number of trees you want
+  createTreeAnimation(15); // Create 15 trees with random animations
+</script>
