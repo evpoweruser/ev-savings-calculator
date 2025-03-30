@@ -6,6 +6,9 @@
     <title>EV Savings Calculator</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="content">
@@ -53,11 +56,474 @@
             <div id="treeAnimation"></div>
         </div>
         
-        <!-- Take to Top Button -->
         <div id="takeToTop" onclick="scrollToTop()">
             <img src="up-arrow.png" alt="Go to top">
         </div>
     </div>
-    <script src="script.js" defer></script>
-</body>
-</html>
+    <script>
+        // Function to update the value shown next to each slider
+        function updateValue(id) {
+            const slider = document.getElementById(id);
+            const valueSpan = document.getElementById(id + 'Value');
+            valueSpan.textContent = slider.value;
+        }
+
+        // Function to get CO2 reduction factor based on selected country
+        function getCO2ReductionFactor(country) {
+            const factors = {
+                india: 0.0005,
+                usa: 0.0004,
+                germany: 0.0003,
+                china: 0.0006,
+                tamilnadu: 0.00045
+            };
+            return factors[country] || 0.0005; // default factor if country not found
+        }
+
+        // Function to calculate savings and CO2 emissions
+        function calculateSavings() {
+            try {
+                const country = document.getElementById("country").value;
+                const co2ReductionFactor = getCO2ReductionFactor(country);
+
+                const distance = parseFloat(document.getElementById("distance").value);
+                const evEfficiency = parseFloat(document.getElementById("evEfficiency").value);
+                const electricityCost = parseFloat(document.getElementById("electricityCost").value);
+                const petrolCost = parseFloat(document.getElementById("petrolCost").value);
+                const petrolMileage = parseFloat(document.getElementById("petrolMileage").value);
+
+                // Input validation
+                if (distance < 0 || evEfficiency < 0 || electricityCost < 0 || petrolCost < 0 || petrolMileage <= 0) {
+                    throw new Error("Invalid input: Please ensure all values are non-negative and petrol mileage is greater than zero.");
+                }
+                // EV energy consumption (Wh/month) and cost (Rs/month)
+                const energyConsumed = distance * evEfficiency;
+                const evCost = (energyConsumed / 1000) * electricityCost;
+
+                // Petrol car fuel consumption and cost (litres/month)
+                const petrolConsumption = distance / petrolMileage;
+                const petrolCostTotal = petrolConsumption * petrolCost;
+
+                // Monthly savings
+                const savings = petrolCostTotal - evCost;
+
+                // CO2 emissions calculations
+                const co2EmissionPetrol = petrolConsumption * 2.31; // CO2 per litre of petrol
+                const co2ReductionCurrentMix = co2EmissionPetrol - (energyConsumed * co2ReductionFactor);
+                const co2ReductionRenewable = co2EmissionPetrol - (energyConsumed * 0.0001);
+
+                // Equivalent EV distance to produce same CO2 as Petrol Car
+                const equivalentEVDistance = co2EmissionPetrol / (evEfficiency * co2ReductionFactor);
+
+                // Trees planted equivalent calculation
+                const treesPlanted = Math.ceil(co2ReductionRenewable / 22); // 1 tree absorbs 22 kg CO2/year
+
+                // Update the results in the DOM
+                document.getElementById("savings").textContent = `Monthly EV Savings: Rs ${savings.toFixed(2)}`;
+                document.getElementById("co2Emissions").textContent = `Monthly CO2 Emissions from Petrol Car: ${co2EmissionPetrol.toFixed(2)} kg`;
+                document.getElementById("co2ReductionCurrentMix").textContent = `CO2 Reduction with Current Energy Mix: ${co2ReductionCurrentMix.toFixed(2)} kg`;
+                document.getElementById("co2ReductionRenewable").textContent = `CO2 Reduction with Renewable Energy: ${co2ReductionRenewable.toFixed(2)} kg`;
+                document.getElementById("equivalentEVDistance").textContent = `Equivalent EV Distance to produce same CO2 as Petrol Car: ${equivalentEVDistance.toFixed(2)} km`;
+                document.getElementById("treesPlanted").textContent = `Equivalent Trees Planted: ${treesPlanted}`;
+
+                // Prepare data for charts
+                const savingsData = [evCost, petrolCostTotal];
+                const co2ReductionData = [co2ReductionCurrentMix, co2ReductionRenewable];
+
+                // Render charts
+                renderCharts(savingsData, co2ReductionData);
+                createTreeAnimation(treesPlanted);
+
+            } catch (error) {
+                alert(error.message); // Display user-friendly error message
+            }
+        }
+
+        // Function to render pie charts and bar charts
+        function renderCharts(savingsData, co2ReductionData) {
+            try {
+                // --- Savings Pie Chart ---
+                const savingsPieData = [{
+                    values: savingsData,
+                    labels: ['EV Cost', 'Petrol Cost'],
+                    type: 'pie',
+                    marker: {
+                        colors: ['#00FFFF', '#00CCFF'] // Use your neon colors
+                    },
+                    textinfo: 'label+percent',
+                    textposition: 'outside',
+                    hole: 0.3,
+                }];
+
+                const savingsPieLayout = {
+                    title: 'Savings Breakdown',
+                    showlegend: true,
+                    paper_bgcolor: 'rgba(0,0,0,0)', // Transparent background
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    font: {
+                        color: '#fff'
+                    }
+                };
+                Plotly.newPlot('savingsPieChart', savingsPieData, savingsPieLayout);
+
+                // --- CO2 Reduction Pie Chart ---
+                const co2ReductionPieData = [{
+                    values: co2ReductionData,
+                    labels: ['Current Mix', 'Renewable'],
+                    type: 'pie',
+                    marker: {
+                        colors: ['#00FFFF', '#00CCFF']
+                    },
+                    textinfo: 'label+percent',
+                    textposition: 'outside',
+                    hole: 0.3,
+                }];
+
+                const co2ReductionPieLayout = {
+                    title: 'CO2 Reduction',
+                    showlegend: true,
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                     font: {
+                        color: '#fff'
+                    }
+                };
+                Plotly.newPlot('co2ReductionPieChart', co2ReductionPieData, co2ReductionPieLayout);
+
+                // --- Savings Bar Chart ---
+                const savingsBarData = [{
+                    x: ['EV Cost', 'Petrol Cost'],
+                    y: savingsData,
+                    type: 'bar',
+                    marker: {
+                        color: ['#00FFFF', '#00CCFF']
+                    },
+                    text: savingsData,
+                    textposition: 'outside'
+                }];
+
+                const savingsBarLayout = {
+                    title: 'Savings Comparison',
+                    showlegend: false,
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    font: {
+                        color: '#fff'
+                    },
+                    xaxis: {
+                        tickcolor: '#fff',
+                        linecolor: '#fff'
+                    },
+                    yaxis: {
+                        tickcolor: '#fff',
+                        linecolor: '#fff'
+                    }
+                };
+                Plotly.newPlot('savingsBarChart', savingsBarData, savingsBarLayout);
+
+                // --- CO2 Reduction Bar Chart ---
+                const co2ReductionBarData = [{
+                    x: ['Current Mix', 'Renewable'],
+                    y: co2ReductionData,
+                    type: 'bar',
+                    marker: {
+                        color: ['#00FFFF', '#00CCFF']
+                    },
+                     text: co2ReductionData,
+                    textposition: 'outside'
+                }];
+
+                const co2ReductionBarLayout = {
+                    title: 'CO2 Reduction Comparison',
+                    showlegend: false,
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    font: {
+                        color: '#fff'
+                    },
+                    xaxis: {
+                        tickcolor: '#fff',
+                        linecolor: '#fff'
+                    },
+                    yaxis: {
+                        tickcolor: '#fff',
+                        linecolor: '#fff'
+                    }
+                };
+                Plotly.newPlot('co2ReductionBarChart', co2ReductionBarData, co2ReductionBarLayout);
+
+            } catch (error) {
+                console.error("Error rendering charts:", error);
+                alert("Error rendering charts. Please check console for details.");
+            }
+        }
+
+        // Scroll to top functionality
+        function scrollToTop() {
+            const startingY = window.scrollY;
+            const targetY = 0;
+            const duration = 400; //ms
+            let startTime = null;
+
+            function animateScroll(currentTime) {
+            if (!startTime) {
+                startTime = currentTime;
+            }
+
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / duration, 1);
+
+            const easing = (t) => {
+                return 0.5 * (1 - Math.cos(Math.PI * t)); // Easing function for elastic effect
+            };
+
+            window.scrollTo(0, startingY - (startingY - targetY) * easing(progress));
+
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animateScroll);
+            }
+            }
+
+            requestAnimationFrame(animateScroll);
+        }
+
+        // Function to create tree animation
+        function createTreeAnimation(treesCount) {
+            const treeContainer = document.getElementById('treeAnimation');
+            if(!treeContainer){
+                return; // Exit if the container doesn't exist.
+            }
+            treeContainer.innerHTML = ''; // Clear previous animation
+            for (let i = 0; i < treesCount; i++) {
+                const tree = document.createElement('div');
+                tree.classList.add('tree');
+                tree.style.animationDelay = `${i * 0.1}s`; // Stagger the animation start times
+                treeContainer.appendChild(tree);
+            }
+        }
+        </script>
+    <style>
+        /* Define CSS Variables for easier theme customization */
+        :root {
+            --neon-blue: #00FFFF;
+            --hover-blue: #00CCFF;
+            --dark-bg: rgba(0, 0, 50, 0.7);
+            --text-white: #fff;
+            --shadow-blue: rgba(0, 255, 255, 0.5);
+            --input-focus-shadow: 0 0 5px rgba(0, 204, 255, 0.7);
+            --button-focus-shadow: 0 0 5px rgba(0, 204, 255, 0.7);
+            --tree-width: 40px;
+            --tree-height: 40px;
+        }
+
+        /* General body styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('assets/background.gif') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            color: var(--text-white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container for content */
+        .container {
+            background: var(--dark-bg);
+            border-radius: 10px;
+            box-shadow: 0 0 25px var(--shadow-blue);
+            padding: 20px;
+            max-width: 600px;
+            width: 95%;
+            animation: fadeIn 1s ease-in-out;
+            box-sizing: border-box;
+        }
+
+        /* Header and labels */
+        h1,
+        h2 {
+            text-align: center;
+            color: var(--neon-blue);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 8px var(--shadow-blue);
+        }
+
+        label,
+        .range-label,
+        .chart-label {
+            color: var(--neon-blue);
+            font-size: 1rem;
+            margin-top: 0.75rem;
+            display: block;
+        }
+
+        /* Input and Select Styles */
+        input[type="range"],
+        input[type="number"],
+        select,
+        button {
+            width: calc(100% - 20px);
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+            background-color: var(--dark-bg);
+            color: var(--text-white);
+            border: 2px solid var(--neon-blue);
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        input[type="range"],
+        button {
+            height: 2.5rem;
+            cursor: pointer;
+            display: block;
+        }
+
+        input[type="range"]::-webkit-slider-thumb,
+        input[type="range"]::-moz-range-thumb {
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        input[type="number"]:focus,
+        select:focus,
+        button:focus {
+            outline: none;
+            border-color: var(--hover-blue);
+            box-shadow: var(--input-focus-shadow);
+        }
+
+        button {
+            background-color: var(--neon-blue);
+            color: #000;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover {
+            background-color: var(--hover-blue);
+            transform: scale(1.05);
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.4);
+        }
+
+        button:active {
+            transform: scale(1);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Label Styling */
+        label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-weight: bold;
+        }
+
+        /* Results Styling */
+        h2 {
+            margin-top: 2rem;
+        }
+
+        #savings,
+        #co2Emissions,
+        #co2ReductionCurrentMix,
+        #co2ReductionRenewable,
+        #equivalentEVDistance,
+        #treesPlanted {
+            font-size: 1rem;
+            color: var(--text-white);
+            padding: 0.5rem;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-1rem);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll to Top Button */
+        #takeToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #00FFFF;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1000;
+            border: 2px solid #00FFFF;
+        }
+
+        #takeToTop:hover {
+            background-color: #00CCFF;
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.9);
+        }
+
+        #takeToTop img {
+            width: 60%;
+            height: auto;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Tree Animation */
+        #treeAnimation {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-end;
+            min-height: 100px;
+            margin-top: 1rem;
+            z-index: 20;
+        }
+
+        .tree {
+            width: var(--tree-width);
+            height: var(--tree-height);
+            background: url('assets/tree-icon.png') no-repeat center center;
+            background-size: contain;
+            animation: fadeIn 1s infinite, treeGrowth 2s alternate infinite;
+            margin: 0.5rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+       
