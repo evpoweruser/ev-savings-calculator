@@ -193,6 +193,62 @@ html {
     scroll-behavior: smooth;
 }
 
+<style>
+  /* --- Tree Animation 1: Subtle Sway --- */
+  @keyframes treeSway {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+  }
+
+  .tree.sway {
+    animation: treeSway 4s infinite;
+  }
+
+  /* --- Tree Animation 2: Scale and Fade --- */
+  @keyframes treeScaleFade {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; }
+  }
+
+  .tree.scale-fade {
+    animation: treeScaleFade 3s infinite;
+  }
+
+  /* --- Tree Animation 3: Vertical Float --- */
+  @keyframes treeFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  .tree.float {
+    animation: treeFloat 2.5s infinite;
+  }
+
+    /* --- Tree Animation 4: Fade In and Slight Rotate --- */
+  @keyframes fadeInRotate {
+    0% {
+      opacity: 0;
+      transform: rotate(-2deg);
+    }
+    100% {
+      opacity: 1;
+      transform: rotate(2deg);
+    }
+  }
+
+  .tree.fade-rotate {
+    animation: fadeInRotate 2s infinite alternate;
+  }
+
+</style>
+
+<div id="treeAnimation">
+  <div class="tree sway"></div>
+  <div class="tree scale-fade"></div>
+  <div class="tree float"></div>
+  <div class="tree fade-rotate"></div>
+</div>
 /* Tree Animation */
 #treeAnimation {
     position: relative;
